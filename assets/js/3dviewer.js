@@ -36,24 +36,34 @@ window.addEventListener('mouseup', () => {
 
 // --- Touch Events for Mobile ---
 img.parentElement.addEventListener('touchstart', (e) => {
-  dragging = true;
-  startX = e.touches[0].clientX;
-  lastFrame = currentFrame;
-  e.preventDefault();
+  if (e.touches.length === 1) { // Only handle single touch
+    dragging = true;
+    startX = e.touches[0].clientX;
+    lastFrame = currentFrame;
+    e.preventDefault();
+  }
 }, { passive: false });
-window.addEventListener('touchmove', (e) => {
-  if (!dragging) return;
+
+img.parentElement.addEventListener('touchmove', (e) => {
+  if (!dragging || e.touches.length !== 1) return;
+  
   const dx = e.touches[0].clientX - startX;
   const frameShift = Math.round(dx / sensitivity);
   let nextFrame = lastFrame - frameShift;
+  
+  // Wrap around frames
   while (nextFrame < 1) nextFrame += totalFrames;
   while (nextFrame > totalFrames) nextFrame -= totalFrames;
+  
   if (nextFrame !== currentFrame) {
     currentFrame = nextFrame;
     updateImage(currentFrame);
   }
+  
   e.preventDefault();
 }, { passive: false });
-window.addEventListener('touchend', () => {
+
+img.parentElement.addEventListener('touchend', (e) => {
   dragging = false;
-});
+  e.preventDefault();
+}, { passive: false });
