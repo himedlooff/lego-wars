@@ -1,69 +1,44 @@
 const img = document.getElementById('legoImg');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
 const totalFrames = 5; // Update to your number of images
 let currentFrame = 1;
-let dragging = false;
-let startX = 0;
-let lastFrame = 1;
-const sensitivity = 6; // Lower is more sensitive
+
+// Debug: Check if elements are found
+console.log('Elements found:', {
+  img: !!img,
+  prevBtn: !!prevBtn,
+  nextBtn: !!nextBtn
+});
 
 function updateImage(frame) {
   const padded = String(frame).padStart(2, '0');
   img.src = `assets/build1_${padded}.jpg`;
 }
 
-// --- Desktop Mouse Events ---
-img.parentElement.addEventListener('mousedown', (e) => {
-  dragging = true;
-  startX = e.clientX;
-  lastFrame = currentFrame;
-  e.preventDefault();
-});
-window.addEventListener('mousemove', (e) => {
-  if (!dragging) return;
-  const dx = e.clientX - startX;
-  const frameShift = Math.round(dx / sensitivity);
-  let nextFrame = lastFrame - frameShift;
-  while (nextFrame < 1) nextFrame += totalFrames;
-  while (nextFrame > totalFrames) nextFrame -= totalFrames;
-  if (nextFrame !== currentFrame) {
-    currentFrame = nextFrame;
-    updateImage(currentFrame);
+function goToPrevious() {
+  console.log('Previous clicked, current frame:', currentFrame);
+  currentFrame = currentFrame === 1 ? totalFrames : currentFrame - 1;
+  console.log('New frame:', currentFrame);
+  updateImage(currentFrame);
+}
+
+function goToNext() {
+  console.log('Next clicked, current frame:', currentFrame);
+  currentFrame = currentFrame === totalFrames ? 1 : currentFrame + 1;
+  console.log('New frame:', currentFrame);
+  updateImage(currentFrame);
+}
+
+// Button event listeners
+prevBtn.addEventListener('click', goToPrevious);
+nextBtn.addEventListener('click', goToNext);
+
+// Keyboard navigation (optional)
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft') {
+    goToPrevious();
+  } else if (e.key === 'ArrowRight') {
+    goToNext();
   }
 });
-window.addEventListener('mouseup', () => {
-  dragging = false;
-});
-
-// --- Touch Events for Mobile ---
-img.parentElement.addEventListener('touchstart', (e) => {
-  if (e.touches.length === 1) { // Only handle single touch
-    dragging = true;
-    startX = e.touches[0].clientX;
-    lastFrame = currentFrame;
-    e.preventDefault();
-  }
-}, { passive: false });
-
-img.parentElement.addEventListener('touchmove', (e) => {
-  if (!dragging || e.touches.length !== 1) return;
-  
-  const dx = e.touches[0].clientX - startX;
-  const frameShift = Math.round(dx / sensitivity);
-  let nextFrame = lastFrame - frameShift;
-  
-  // Wrap around frames
-  while (nextFrame < 1) nextFrame += totalFrames;
-  while (nextFrame > totalFrames) nextFrame -= totalFrames;
-  
-  if (nextFrame !== currentFrame) {
-    currentFrame = nextFrame;
-    updateImage(currentFrame);
-  }
-  
-  e.preventDefault();
-}, { passive: false });
-
-img.parentElement.addEventListener('touchend', (e) => {
-  dragging = false;
-  e.preventDefault();
-}, { passive: false });

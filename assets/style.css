@@ -23,16 +23,55 @@ main {
   text-align: center;
 }
 .lego-3d-viewer {
-  /* width: 320px; */
-  /* height: 240px; */
-  margin: 1em auto;
   background: #e2e2e2;
   border-radius: 8px;
   overflow: hidden;
-  cursor: ew-resize;
   display: flex;
   align-items: center;
   justify-content: center;
+  max-width: 400px;
+  margin: 1em auto;
+  position: relative;
+}
+
+.carousel-btn {
+  background: rgba(34, 34, 34, 0.8);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  user-select: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  opacity: 0.7;
+}
+
+.carousel-btn:hover {
+  background: rgba(68, 68, 68, 0.9);
+  opacity: 1;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-btn:active {
+  background: rgba(0, 0, 0, 0.9);
+  transform: translateY(-50%) scale(0.95);
+}
+
+.prev-btn {
+  left: 10px;
+}
+
+.next-btn {
+  right: 10px;
 }
 .lego-3d-viewer img {
   width: 100%;
