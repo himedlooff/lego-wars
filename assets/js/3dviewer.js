@@ -1,59 +1,59 @@
-// Simple 3D image rotator for Lego build
 const img = document.getElementById('legoImg');
-const totalFrames = 5; // Number of images you have (e.g. 24 photos around build)
+const totalFrames = 5; // Update to your number of images
 let currentFrame = 1;
 let dragging = false;
-let lastX = 0;
+let startX = 0;
+let lastFrame = 1;
+const sensitivity = 6; // Lower is more sensitive
 
 function updateImage(frame) {
-  // Pad frame number with zeros, e.g., 01, 02, ..., 24
   const padded = String(frame).padStart(2, '0');
   img.src = `assets/build1_${padded}.jpg`;
 }
 
+// --- Desktop Mouse Events ---
 img.parentElement.addEventListener('mousedown', (e) => {
   dragging = true;
-  lastX = e.clientX;
+  startX = e.clientX;
+  lastFrame = currentFrame;
+  e.preventDefault();
+});
+window.addEventListener('mousemove', (e) => {
+  if (!dragging) return;
+  const dx = e.clientX - startX;
+  const frameShift = Math.round(dx / sensitivity);
+  let nextFrame = lastFrame - frameShift;
+  while (nextFrame < 1) nextFrame += totalFrames;
+  while (nextFrame > totalFrames) nextFrame -= totalFrames;
+  if (nextFrame !== currentFrame) {
+    currentFrame = nextFrame;
+    updateImage(currentFrame);
+  }
 });
 window.addEventListener('mouseup', () => {
   dragging = false;
 });
-window.addEventListener('mousemove', (e) => {
-  if (!dragging) return;
-  const dx = e.clientX - lastX;
-  if (Math.abs(dx) > 8) { // Adjust sensitivity
-    if (dx > 0) {
-      currentFrame = currentFrame - 1;
-      if (currentFrame < 1) currentFrame = totalFrames;
-    } else {
-      currentFrame = currentFrame + 1;
-      if (currentFrame > totalFrames) currentFrame = 1;
-    }
-    updateImage(currentFrame);
-    lastX = e.clientX;
-  }
-});
 
-// Touch events for mobile
+// --- Touch Events for Mobile ---
 img.parentElement.addEventListener('touchstart', (e) => {
   dragging = true;
-  lastX = e.touches[0].clientX;
-});
-window.addEventListener('touchend', () => {
-  dragging = false;
-});
+  startX = e.touches[0].clientX;
+  lastFrame = currentFrame;
+  e.preventDefault();
+}, { passive: false });
 window.addEventListener('touchmove', (e) => {
   if (!dragging) return;
-  const dx = e.touches[0].clientX - lastX;
-  if (Math.abs(dx) > 8) {
-    if (dx > 0) {
-      currentFrame = currentFrame - 1;
-      if (currentFrame < 1) currentFrame = totalFrames;
-    } else {
-      currentFrame = currentFrame + 1;
-      if (currentFrame > totalFrames) currentFrame = 1;
-    }
+  const dx = e.touches[0].clientX - startX;
+  const frameShift = Math.round(dx / sensitivity);
+  let nextFrame = lastFrame - frameShift;
+  while (nextFrame < 1) nextFrame += totalFrames;
+  while (nextFrame > totalFrames) nextFrame -= totalFrames;
+  if (nextFrame !== currentFrame) {
+    currentFrame = nextFrame;
     updateImage(currentFrame);
-    lastX = e.touches[0].clientX;
   }
+  e.preventDefault();
+}, { passive: false });
+window.addEventListener('touchend', () => {
+  dragging = false;
 });
