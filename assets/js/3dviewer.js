@@ -1,6 +1,6 @@
 // Simple 3D image rotator for Lego build
 const img = document.getElementById('legoImg');
-const totalFrames = 24; // Number of images you have (e.g. 24 photos around build)
+const totalFrames = 5; // Number of images you have (e.g. 24 photos around build)
 let currentFrame = 1;
 let dragging = false;
 let lastX = 0;
