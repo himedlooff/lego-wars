@@ -1,7 +1,7 @@
 const img = document.getElementById('legoImg');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
-const totalFrames = 4; // Update to your number of images
+const totalFrames = 13; // Update to your number of images
 let currentFrame = 1;
 
 function updateImage(frame) {
