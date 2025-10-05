@@ -8,21 +8,26 @@
 </head>
 <body>
   <header>
-    <img src="assets/logo.png" alt ="LEgo World War" />
+    <img src="assets/logo.png" alt="Lego World War" />
   </header>
   <main>
-    <section class="build-showcase">
-      <h2>SWAT Truck</h2>
-      <div class="lego-3d-viewer" id="legoViewer">
-        <img id="legoImg" src="assets/build1_01.jpg" alt="Lego build - 3D view">
-        <button class="carousel-btn prev-btn" id="prevBtn">&#8249;</button>
-        <button class="carousel-btn next-btn" id="nextBtn">&#8250;</button>
-      </div>
-    </section>
+    <!-- Template that will be cloned -->
+    <div class="build-container" id="buildTemplate" style="display: none;">
+      <section class="build-showcase">
+        <h2 class="build-title"></h2>
+        <div class="lego-3d-viewer">
+          <img class="lego-img" alt="Lego build - 3D view">
+          <button class="carousel-btn prev-btn">‹</button>
+          <button class="carousel-btn next-btn">›</button>
+        </div>
+      </section>
+    </div>
   </main>
   <footer>
     <p>&copy; 2025 Lego World War. Not affiliated with LEGO&reg;.</p>
   </footer>
+
+  <script src="assets/js/builds.js"></script>
   <script src="assets/js/3dviewer.js"></script>
 </body>
 </html>
