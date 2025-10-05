@@ -50,8 +50,8 @@ main {
   align-items: center;
   justify-content: center;
   max-width: 600px;
-  /* margin: 1em auto; */
   position: relative;
+  aspect-ratio: 3/4;
 }
 
 .carousel-btn {

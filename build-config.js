@@ -21,7 +21,7 @@ const builds = {};
 files.forEach(file => {
   const match = file.match(buildPattern);
   if (match) {
-    const buildNum = match[1];
+    const buildNum = parseInt(match[1]); // Convert to number for sorting
     const frameNum = parseInt(match[2]);
     const buildId = `build${buildNum}`;
     
@@ -38,8 +38,11 @@ files.forEach(file => {
   }
 });
 
-// Convert to array and write to builds.js
-const config = Object.values(builds);
+// Convert to array and sort by build number (descending)
+const config = Object.entries(builds)
+  .sort(([a], [b]) => parseInt(b) - parseInt(a)) // Sort by build number
+  .map(([_, build]) => build);
+
 const jsContent = `window.BUILDS = ${JSON.stringify(config, null, 2)};`;
 
 fs.writeFileSync(
@@ -47,4 +50,4 @@ fs.writeFileSync(
   jsContent
 );
 
-console.log('Generated builds.js with:', config.length, 'builds');
+console.log('Generated builds.js with:', config.length, 'builds (sorted newest first)');
