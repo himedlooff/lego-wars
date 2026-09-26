@@ -14,12 +14,13 @@
     <!-- Template that will be cloned -->
     <div class="build-container" id="buildTemplate" style="display: none;">
       <section class="build-showcase">
-        <h2 class="build-title"></h2>
         <div class="lego-3d-viewer">
-          <img class="lego-img" alt="Lego build - 3D view">
-          <button class="carousel-btn prev-btn">‹</button>
-          <button class="carousel-btn next-btn">›</button>
+          <img class="lego-img" alt="Lego build - 3D view" draggable="false">
+          <button class="carousel-btn prev-btn" aria-label="Previous view">‹</button>
+          <button class="carousel-btn next-btn" aria-label="Next view">›</button>
+          <span class="frame-counter"></span>
         </div>
+        <h2 class="build-title"></h2>
       </section>
     </div>
   </main>
