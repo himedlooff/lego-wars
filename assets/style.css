@@ -21,16 +21,39 @@ main {
   margin: 24px auto 0;
 }
 .logo-card {
-  aspect-ratio: 3/4;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 24px;
   padding: 24px;
 }
 .logo-card img {
   width: 100%;
   max-width: 320px;
 }
+.build-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-family: "Black Ops One", system-ui, sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.build-list a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.build-list a:hover,
+.build-list a:focus-visible {
+  color: var(--accent);
+  outline: none;
+}
+.build-list a:focus-visible { outline: 2px solid var(--accent); }
 .build-container {
   background: var(--card);
   border: 1px solid var(--card-edge);
@@ -141,15 +164,17 @@ footer {
     margin: 0;
     padding: 24px 32px;
     overflow-x: auto;
+    scroll-padding-left: 32px;
     scrollbar-width: none;
   }
   main::-webkit-scrollbar { display: none; }
   .build-container {
     flex: 0 0 auto;
     height: var(--card-h);
-    width: calc((var(--card-h) - 48px) * 3 / 4);
+    /* 78px = title line (50) + its padding (28). */
+    width: calc((var(--card-h) - 78px) * 3 / 4);
   }
-  .logo-card { aspect-ratio: auto; }
+  .build-title { font-size: 50px; line-height: 50px; }
   .lego-3d-viewer { max-height: none; }
   footer {
     margin: 0;

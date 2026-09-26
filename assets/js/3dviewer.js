@@ -82,10 +82,20 @@ class BuildViewer {
 document.addEventListener('DOMContentLoaded', () => {
   const main = document.querySelector('main');
   const template = document.getElementById('buildTemplate');
+  const list = document.querySelector('.build-list');
 
   BUILDS.forEach(build => {
     const viewer = new BuildViewer(build, template);
     main.appendChild(viewer.element);
+
+    const link = document.createElement('a');
+    link.href = `#${build.id}`;
+    link.textContent = build.name;
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      viewer.element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' });
+    });
+    list.appendChild(link);
   });
 
   // Desktop row scrolls sideways, but a plain mouse wheel only reports vertical movement.
