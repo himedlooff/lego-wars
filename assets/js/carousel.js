@@ -12,7 +12,7 @@ class BuildViewer {
     this.element.style.display = '';
 
     // Store DOM elements as instance properties
-    this.viewer = this.element.querySelector('.lego-3d-viewer');
+    this.viewer = this.element.querySelector('.carousel');
     this.img = this.element.querySelector('.lego-img');
     this.prevBtn = this.element.querySelector('.prev-btn');
     this.nextBtn = this.element.querySelector('.next-btn');

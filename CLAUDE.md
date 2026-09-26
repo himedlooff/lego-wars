@@ -9,7 +9,7 @@ Pushing to `main` is the deploy.
 - `index.html` — page shell, the logo card, plus a hidden `#buildTemplate` card that gets cloned per build.
 - `assets/style.css` — all styling. Cards are 3:4 aspect ratio, dark page background. At 900px and wider the cards form one viewport-tall row that scrolls sideways; narrower screens stack them vertically.
 - `assets/js/builds.js` — **generated, do not hand-edit.** `window.BUILDS` array of `{ id, name, totalFrames }`, newest build first.
-- `assets/js/3dviewer.js` — clones the template for each entry in `BUILDS`, wires prev/next buttons, drag, left/right arrow keys, and turns mouse-wheel scrolling into sideways scrolling on desktop. Despite the name it is a plain photo carousel, not a 3D or 360° spin (that was an early idea that didn't pan out). Image path is `assets/{id}_{frame}.jpg`, frame zero-padded to 2 digits.
+- `assets/js/carousel.js` — clones the template for each entry in `BUILDS`, wires prev/next buttons, drag, left/right arrow keys, and turns mouse-wheel scrolling into sideways scrolling on desktop. It is a plain photo carousel, not a 3D or 360° spin. Image path is `assets/{id}_{frame}.jpg`, frame zero-padded to 2 digits.
 - `assets/buildN_NN.jpg` — the photos the site serves. `N` is the build number, `NN` is the frame (carousel slide).
 - `build-names.json` — maps `buildN` to a display name. Missing name falls back to `Build N`.
 - `build-config.js` — Node script. Scans `assets/` for `buildN_NN.jpg`, counts frames, reads names, writes `builds.js`.
@@ -52,7 +52,7 @@ Say the last build is `build2` and the new one is the third.
 - **Rename a build:** edit `build-names.json`, run `node build-config.js`, commit both.
 - **Add or remove a frame:** add/remove the jpg in `assets/` (renumber so there are no gaps), run `node build-config.js`.
 - **Remove a build:** delete its jpgs from `assets/`, remove its name, run `node build-config.js`.
-- **Styling or viewer behaviour:** `assets/style.css` and `assets/js/3dviewer.js`. Nothing is bundled, edit in place.
+- **Styling or viewer behaviour:** `assets/style.css` and `assets/js/carousel.js`. Nothing is bundled, edit in place.
 
 ## Gotchas
 
