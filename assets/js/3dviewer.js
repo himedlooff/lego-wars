@@ -1,22 +1,27 @@
+// Pixels of horizontal drag that advance one frame.
+const DRAG_STEP_PX = 30;
+
 class BuildViewer {
   constructor(build, template) {
     this.build = build;
     this.currentFrame = 1;
     this.element = template.cloneNode(true);
-    
+
     // Remove template ID and show the element
     this.element.removeAttribute('id');
     this.element.style.display = '';
-    
+
     // Store DOM elements as instance properties
+    this.viewer = this.element.querySelector('.lego-3d-viewer');
     this.img = this.element.querySelector('.lego-img');
     this.prevBtn = this.element.querySelector('.prev-btn');
     this.nextBtn = this.element.querySelector('.next-btn');
-    
+    this.counter = this.element.querySelector('.frame-counter');
+
     // Set initial content
     this.element.querySelector('.build-title').textContent = this.build.name;
-    this.img.src = this.getImagePath(1);
-    
+    this.updateImage();
+
     this.setupEventListeners();
   }
 
@@ -28,31 +33,56 @@ class BuildViewer {
   setupEventListeners() {
     this.prevBtn.addEventListener('click', () => this.goToPrevious());
     this.nextBtn.addEventListener('click', () => this.goToNext());
-    
-    // Prevent dragging on the image
-    this.img.addEventListener('dragstart', (e) => e.preventDefault());
+    this.setupDrag();
+  }
+
+  setupDrag() {
+    let startX = null;
+    let startFrame = 1;
+
+    this.viewer.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('.carousel-btn')) return;
+      startX = e.clientX;
+      startFrame = this.currentFrame;
+      this.viewer.classList.add('dragging');
+      this.viewer.setPointerCapture(e.pointerId);
+    });
+    this.viewer.addEventListener('pointermove', (e) => {
+      if (startX === null) return;
+      const steps = Math.round((e.clientX - startX) / DRAG_STEP_PX);
+      this.setFrame(startFrame + steps);
+    });
+    const end = () => {
+      startX = null;
+      this.viewer.classList.remove('dragging');
+    };
+    this.viewer.addEventListener('pointerup', end);
+    this.viewer.addEventListener('pointercancel', end);
+  }
+
+  setFrame(frame) {
+    const n = this.build.totalFrames;
+    const wrapped = ((frame - 1) % n + n) % n + 1;
+    if (wrapped === this.currentFrame) return;
+    this.currentFrame = wrapped;
+    this.updateImage();
   }
 
   updateImage() {
     this.img.src = this.getImagePath(this.currentFrame);
+    this.counter.textContent = `${this.currentFrame} / ${this.build.totalFrames}`;
+    new Image().src = this.getImagePath(this.currentFrame % this.build.totalFrames + 1);
   }
 
-  goToPrevious() {
-    this.currentFrame = this.currentFrame === 1 ? this.build.totalFrames : this.currentFrame - 1;
-    this.updateImage();
-  }
-
-  goToNext() {
-    this.currentFrame = this.currentFrame === this.build.totalFrames ? 1 : this.currentFrame + 1;
-    this.updateImage();
-  }
+  goToPrevious() { this.setFrame(this.currentFrame - 1); }
+  goToNext() { this.setFrame(this.currentFrame + 1); }
 }
 
 // Initialize viewers when page loads
 document.addEventListener('DOMContentLoaded', () => {
   const main = document.querySelector('main');
   const template = document.getElementById('buildTemplate');
-  
+
   BUILDS.forEach(build => {
     const viewer = new BuildViewer(build, template);
     main.appendChild(viewer.element);
