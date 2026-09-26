@@ -14,20 +14,23 @@ body {
   padding: 0 16px 32px;
   color: var(--text);
 }
-header {
-  text-align: center;
-  padding: 32px 0 16px;
-}
-header img {
-  width: 100%;
-  max-width: 320px;
-}
 main {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
   max-width: 1280px;
   margin: 24px auto 0;
+}
+.logo-card {
+  aspect-ratio: 3/4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.logo-card img {
+  width: 100%;
+  max-width: 320px;
 }
 .build-container {
   background: var(--card);
@@ -45,6 +48,7 @@ main {
   padding: 14px 16px;
   font-size: 1.05rem;
   font-weight: 600;
+  line-height: 20px;
   letter-spacing: 0.01em;
   text-align: center;
 }
@@ -112,4 +116,42 @@ footer {
   color: var(--muted);
   font-size: 0.85rem;
   text-align: center;
+}
+
+
+/* Desktop: one viewport-tall row of cards that scrolls sideways. */
+@media (min-width: 900px) {
+  /* 88px = main padding (48) + footer (40). */
+  :root { --card-h: calc(100vh - 88px); }
+  body {
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  main {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    gap: 24px;
+    max-width: none;
+    margin: 0;
+    padding: 24px 32px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  main::-webkit-scrollbar { display: none; }
+  .build-container {
+    flex: 0 0 auto;
+    height: var(--card-h);
+    width: calc((var(--card-h) - 48px) * 3 / 4);
+  }
+  .logo-card { aspect-ratio: auto; }
+  footer {
+    margin: 0;
+    padding: 12px 0;
+    line-height: 16px;
+  }
+  footer p { margin: 0; }
 }
