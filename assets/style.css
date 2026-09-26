@@ -16,9 +16,8 @@ body {
 }
 main {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
   gap: 20px;
-  max-width: 1280px;
   margin: 24px auto 0;
 }
 .logo-card {
@@ -46,16 +45,19 @@ main {
 .build-title {
   margin: 0;
   padding: 14px 16px;
-  font-size: 1.05rem;
-  font-weight: 600;
+  font-family: "Black Ops One", system-ui, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 400;
   line-height: 20px;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   text-align: center;
 }
 .lego-3d-viewer {
   background: #000;
   position: relative;
   aspect-ratio: 3/4;
+  max-height: 85svh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -148,6 +150,7 @@ footer {
     width: calc((var(--card-h) - 48px) * 3 / 4);
   }
   .logo-card { aspect-ratio: auto; }
+  .lego-3d-viewer { max-height: none; }
   footer {
     margin: 0;
     padding: 12px 0;
