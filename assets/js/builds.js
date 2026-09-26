@@ -2,7 +2,7 @@ window.BUILDS = [
   {
     "id": "build2",
     "name": "Battleship",
-    "totalFrames": 12
+    "totalFrames": 11
   },
   {
     "id": "build1",
