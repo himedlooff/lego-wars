@@ -20,13 +20,39 @@ header {
 }
 header img {
   width: 100%;
-  max-width: 320px;
+  max-width: 220px;
+}
+/* Mobile: header sticks and collapses in step with scroll. No support = plain header. */
+@supports (animation-timeline: scroll()) {
+  @media (max-width: 767px) {
+    /* The header shrinks as you scroll; anchoring would drag the scroll position back. */
+    body { overflow-anchor: none; }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: 16px 0 8px;
+      background: rgba(17, 17, 17, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      animation: header-collapse linear both;
+      animation-timeline: scroll();
+      animation-range: 0 160px;
+    }
+    header img {
+      max-width: 220px;
+      animation: logo-collapse linear both;
+      animation-timeline: scroll();
+      animation-range: 0 160px;
+    }
+    @keyframes header-collapse { to { padding: 6px 0; } }
+    @keyframes logo-collapse { to { max-width: 64px; } }
+  }
 }
 main {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
   gap: 20px;
-  max-width: 1280px;
   margin: 24px auto 0;
 }
 .build-container {
@@ -43,15 +69,18 @@ main {
 .build-title {
   margin: 0;
   padding: 14px 16px;
-  font-size: 1.05rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
+  font-family: "Black Ops One", system-ui, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   text-align: center;
 }
 .lego-3d-viewer {
   background: #000;
   position: relative;
   aspect-ratio: 3/4;
+  max-height: 85svh;
   display: flex;
   align-items: center;
   justify-content: center;
