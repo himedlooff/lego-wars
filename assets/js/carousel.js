@@ -12,7 +12,7 @@ class BuildViewer {
     this.element.style.display = '';
 
     // Store DOM elements as instance properties
-    this.viewer = this.element.querySelector('.lego-3d-viewer');
+    this.viewer = this.element.querySelector('.carousel');
     this.img = this.element.querySelector('.lego-img');
     this.prevBtn = this.element.querySelector('.prev-btn');
     this.nextBtn = this.element.querySelector('.next-btn');
@@ -82,26 +82,45 @@ class BuildViewer {
 document.addEventListener('DOMContentLoaded', () => {
   const main = document.querySelector('main');
   const template = document.getElementById('buildTemplate');
+  const list = document.querySelector('.build-list');
 
   BUILDS.forEach(build => {
     const viewer = new BuildViewer(build, template);
     main.appendChild(viewer.element);
+
+    const link = document.createElement('a');
+    link.href = `#${build.id}`;
+    link.textContent = build.name;
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      viewer.element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' });
+    });
+    list.appendChild(link);
   });
+
+  // Desktop row scrolls sideways, but a plain mouse wheel only reports vertical movement.
+  main.addEventListener('wheel', (e) => {
+    if (main.scrollWidth <= main.clientWidth || e.deltaX !== 0) return;
+    e.preventDefault();
+    main.scrollLeft += e.deltaY;
+  }, { passive: false });
 });
 
 // Global keyboard navigation
 document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
     // Find the build card that's most visible in the viewport
-    const cards = document.querySelectorAll('.build-container:not(#buildTemplate)');
+    const cards = document.querySelectorAll('.build-container:not(#buildTemplate):not(.logo-card)');
     let mostVisible = null;
     let maxVisibleArea = 0;
 
     cards.forEach(card => {
       const rect = card.getBoundingClientRect();
       const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
-      if (visibleHeight > maxVisibleArea) {
-        maxVisibleArea = visibleHeight;
+      const visibleWidth = Math.min(rect.right, window.innerWidth) - Math.max(rect.left, 0);
+      const visibleArea = Math.max(0, visibleHeight) * Math.max(0, visibleWidth);
+      if (visibleArea > maxVisibleArea) {
+        maxVisibleArea = visibleArea;
         mostVisible = card;
       }
     });

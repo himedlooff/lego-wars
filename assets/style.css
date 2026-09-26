@@ -14,47 +14,46 @@ body {
   padding: 0 16px 32px;
   color: var(--text);
 }
-header {
-  text-align: center;
-  padding: 32px 0 16px;
-}
-header img {
-  width: 100%;
-  max-width: 220px;
-}
-/* Mobile: header sticks and collapses in step with scroll. No support = plain header. */
-@supports (animation-timeline: scroll()) {
-  @media (max-width: 767px) {
-    /* The header shrinks as you scroll; anchoring would drag the scroll position back. */
-    body { overflow-anchor: none; }
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      padding: 16px 0 8px;
-      background: rgba(17, 17, 17, 0.85);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      animation: header-collapse linear both;
-      animation-timeline: scroll();
-      animation-range: 0 160px;
-    }
-    header img {
-      max-width: 220px;
-      animation: logo-collapse linear both;
-      animation-timeline: scroll();
-      animation-range: 0 160px;
-    }
-    @keyframes header-collapse { to { padding: 6px 0; } }
-    @keyframes logo-collapse { to { max-width: 64px; } }
-  }
-}
 main {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
   gap: 20px;
   margin: 24px auto 0;
 }
+.logo-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 24px;
+}
+.logo-card img {
+  width: 100%;
+  max-width: 320px;
+}
+.build-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-family: "Black Ops One", system-ui, sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.build-list a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.build-list a:hover,
+.build-list a:focus-visible {
+  color: var(--accent);
+  outline: none;
+}
+.build-list a:focus-visible { outline: 2px solid var(--accent); }
 .build-container {
   background: var(--card);
   border: 1px solid var(--card-edge);
@@ -72,11 +71,12 @@ main {
   font-family: "Black Ops One", system-ui, sans-serif;
   font-size: 1.25rem;
   font-weight: 400;
+  line-height: 20px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   text-align: center;
 }
-.lego-3d-viewer {
+.carousel {
   background: #000;
   position: relative;
   aspect-ratio: 3/4;
@@ -87,8 +87,8 @@ main {
   cursor: grab;
   touch-action: pan-y;
 }
-.lego-3d-viewer.dragging { cursor: grabbing; }
-.lego-3d-viewer img {
+.carousel.dragging { cursor: grabbing; }
+.carousel img {
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -114,7 +114,7 @@ main {
 }
 .prev-btn { left: 10px; }
 .next-btn { right: 10px; }
-.lego-3d-viewer:hover .carousel-btn,
+.carousel:hover .carousel-btn,
 .carousel-btn:focus-visible { opacity: 1; }
 .carousel-btn:hover { background: var(--accent); color: #111; }
 .carousel-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -141,4 +141,45 @@ footer {
   color: var(--muted);
   font-size: 0.85rem;
   text-align: center;
+}
+
+
+/* Desktop: one viewport-tall row of cards that scrolls sideways. */
+@media (min-width: 900px) {
+  /* 88px = main padding (48) + footer (40). */
+  :root { --card-h: calc(100vh - 88px); }
+  body {
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  main {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    gap: 24px;
+    max-width: none;
+    margin: 0;
+    padding: 24px 32px;
+    overflow-x: auto;
+    scroll-padding-left: 32px;
+    scrollbar-width: none;
+  }
+  main::-webkit-scrollbar { display: none; }
+  .build-container {
+    flex: 0 0 auto;
+    height: var(--card-h);
+    /* 78px = title line (50) + its padding (28). */
+    width: calc((var(--card-h) - 78px) * 3 / 4);
+  }
+  .build-title { font-size: 50px; line-height: 50px; }
+  .carousel { max-height: none; }
+  footer {
+    margin: 0;
+    padding: 12px 0;
+    line-height: 16px;
+  }
+  footer p { margin: 0; }
 }

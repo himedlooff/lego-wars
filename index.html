@@ -10,15 +10,16 @@
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-  <header>
-    <img src="assets/logo.png" alt="Lego World War" />
-  </header>
   <main>
+    <div class="build-container logo-card">
+      <img src="assets/logo.png" alt="Lego World War" />
+      <nav class="build-list" aria-label="Builds"></nav>
+    </div>
     <!-- Template that will be cloned -->
     <div class="build-container" id="buildTemplate" style="display: none;">
       <section class="build-showcase">
-        <div class="lego-3d-viewer">
-          <img class="lego-img" alt="Lego build - 3D view" draggable="false">
+        <div class="carousel">
+          <img class="lego-img" alt="Lego build photo" draggable="false">
           <button class="carousel-btn prev-btn" aria-label="Previous view">‹</button>
           <button class="carousel-btn next-btn" aria-label="Next view">›</button>
           <span class="frame-counter"></span>
@@ -32,6 +33,6 @@
   </footer>
 
   <script src="assets/js/builds.js"></script>
-  <script src="assets/js/3dviewer.js"></script>
+  <script src="assets/js/carousel.js"></script>
 </body>
 </html>
