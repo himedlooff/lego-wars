@@ -1,5 +1,10 @@
 window.BUILDS = [
   {
+    "id": "build7",
+    "name": "Island Enemies",
+    "totalFrames": 3
+  },
+  {
     "id": "build6",
     "name": "Sniper spot",
     "totalFrames": 3
